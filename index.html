@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingiliz Tili</title>
+
+<style>
+
+/* ================= RESET ================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:#f5f7fb;
+}
+
+/* ================= MENU ================= */
+#menu{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    max-width:700px;
+    width:100%;
+}
+
+.card{
+    background:linear-gradient(135deg,#ffffff,#f1f5f9);
+    border-radius:16px;
+    height:120px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    transition:0.25s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg,#3b82f6,#22c55e);
+    opacity:0;
+    transition:0.3s;
+}
+
+.card:hover::before{
+    opacity:0.15;
+}
+
+.card:hover{
+    transform:translateY(-5px) scale(1.03);
+}
+
+.icon{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.card span{
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* ================= APP ================= */
+#app{
+    display:none;
+}
+
+/* TOPBAR */
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 15px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    z-index:100;
+}
+
+.btn{
+    padding:10px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.home{
+    background:#ef4444;
+    color:white;
+}
+
+.resultBtn{
+    background:#22c55e;
+    color:white;
+}
+
+/* ================= CONTAINER ================= */
+.container{
+    margin-top:60px;
+    display:flex;
+    flex-wrap:wrap;
+}
+
+/* GRID NUMBERS */
+.grid{
+    flex:1;
+    max-width:300px;
+    height:calc(100vh - 120px);
+    overflow:auto;
+    background:white;
+    padding:10px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:6px;
+}
+
+.box{
+    aspect-ratio:1/1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:8px;
+    border:1px solid #ddd;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.active{
+    background:#3b82f6;
+    color:white;
+}
+
+.answered{
+    background:#22c55e;
+    color:white;
+}
+
+/* ================= QUESTION ================= */
+.main{
+    flex:3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.qbox{
+    width:100%;
+    max-width:550px;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.1);
+    text-align:center;
+}
+
+.option{
+    margin:8px 0;
+    padding:10px;
+    border-radius:8px;
+    background:#f1f5f9;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.option:hover{
+    background:#dbeafe;
+}
+
+.selected{
+    background:#60a5fa;
+    color:white;
+}
+
+/* ================= RESULT ================= */
+#resultPage{
+    display:none;
+    padding:20px;
+    text-align:center;
+}
+
+.resultBox{
+    background:white;
+    margin:10px auto;
+    padding:15px;
+    border-radius:12px;
+    max-width:600px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.correct{color:#16a34a;font-weight:bold}
+.wrong{color:#dc2626;font-weight:bold}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:768px){
+    .menu-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .container{
+        flex-direction:column;
+    }
+
+    .grid{
+        max-width:100%;
+        height:auto;
+        grid-template-columns:repeat(8,1fr);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= MENU ================= -->
+<div id="menu">
+    <div class="menu-grid">
+
+        <div class="card" onclick="start(1)">
+            <div class="icon">📘</div><span>Test 1</span>
+        </div>
+
+        <div class="card" onclick="start(2)">
+            <div class="icon">📗</div><span>Test 2</span>
+        </div>
+
+        <div class="card" onclick="start(3)">
+            <div class="icon">📕</div><span>Test 3</span>
+        </div>
+
+        <div class="card" onclick="start(4)">
+            <div class="icon">📙</div><span>Test 4</span>
+        </div>
+
+        <div class="card" onclick="start(5)">
+            <div class="icon">📒</div><span>Test 5</span>
+        </div>
+
+        <div class="card" onclick="start(6)">
+            <div class="icon">📓</div><span>Test 6</span>
+        </div>
+
+        <div class="card" onclick="start(7)">
+            <div class="icon">📙</div><span>Test 7</span>
+        </div>
+
+        <div class="card" onclick="start(8)">
+            <div class="icon">💻</div><span>IT TEST</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+
+<div class="topbar">
+    <button class="btn home" onclick="home()">🏠 Chiqish</button>
+    <h3>📘 INGILIZ TEST</h3>
+    <button class="btn resultBtn" onclick="showResult()">🏆 Natija</button>
+</div>
+
+<div class="container">
+    <div class="grid" id="grid"></div>
+    <div class="main">
+        <div class="qbox" id="qbox">Savolni tanlang 📌</div>
+    </div>
+</div>
+
+</div>
+
+<!-- ================= RESULT ================= -->
+<div id="resultPage"></div>
+
+<script>
+
+
+const questions = [
+
+{q:"1. I ___ a teacher.", options:["is","am","are"], correct:[1]},
+{q:"2. She ___ in London.", options:["live","lives","living"], correct:[1]},
+{q:"3. This is ___ book. (I)", options:["my","mine","me"], correct:[0]},
+{q:"4. Tom ___ two brothers.", options:["have","has","having"], correct:[1]},
+{q:"5. They ___ go to the cinema on Fridays.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"6. He ___ from Italy.", options:["am","is","are"], correct:[1]},
+{q:"7. We like ___ teacher.", options:["our","ours","us"], correct:[0]},
+{q:"8. ___ name is Sarah. (the girl)", options:["the girls","the girl's","the girls'"], correct:[1]},
+{q:"9. I ___ in a small flat.", options:["live","lives","living"], correct:[0]},
+{q:"10. ___ you play tennis?", options:["Do","Does","Is"], correct:[0]},
+{q:"11. They ___ happy today.", options:["am","is","are"], correct:[2]},
+{q:"12. He ___ pizza.", options:["like","likes","liking"], correct:[1]},
+{q:"13. This is ___ car. (my parents)", options:["my parents'","my parent's","parents'"], correct:[0]},
+{q:"14. We ___ two cats.", options:["have","has","having"], correct:[0]},
+{q:"15. She ___ go to work on Sundays.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"16. I ___ not from France.", options:["is","am","are"], correct:[1]},
+{q:"17. They ___ to school every day.", options:["goes","go","going"], correct:[1]},
+{q:"18. He loves ___ dog.", options:["his","her","their"], correct:[0]},
+{q:"19. ___ house is big. (Tom)", options:["Toms","Tom's","Toms'"], correct:[1]},
+{q:"20. She ___ coffee.", options:["not like","doesn't like","don't like"], correct:[1]},
+{q:"21. We ___ friends.", options:["are","am","is"], correct:[0]},
+{q:"22. He ___ in a flat near the park.", options:["live","lives","living"], correct:[1]},
+{q:"23. ___ name is Emma. (I)", options:["My","Mine","Me"], correct:[0]},
+{q:"24. I ___ breakfast at 7:00.", options:["have","has","having"], correct:[0]},
+{q:"25. They ___ like cold weather.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"26. She ___ very tall.", options:["am","is","are"], correct:[1]},
+{q:"27. I ___ to the gym every morning.", options:["goes","go","going"], correct:[1]},
+{q:"28. That is ___ bike. (John)", options:["Johns","John's","Johns'"], correct:[1]},
+{q:"29. We like ___ garden.", options:["our","ours","us"], correct:[0]},
+{q:"30. He ___ got a big family.", options:["have","has","having"], correct:[1]},
+{q:"31. You ___ my best friend.", options:["am","are","is"], correct:[1]},
+{q:"32. She ___ tea.", options:["like","likes","liking"], correct:[1]},
+{q:"33. This is ___ house. (my sister)", options:["my sisters'","my sister's","my sister"], correct:[1]},
+{q:"34. We ___ in London.", options:["live","lives","living"], correct:[0]},
+{q:"35. They ___ to school on Saturday.", options:["don't go","doesn't go","not go"], correct:[0]},
+{q:"36. It ___ cold today.", options:["am","is","are"], correct:[1]},
+{q:"37. I ___ football on Sundays.", options:["play","plays","playing"], correct:[0]},
+{q:"38. He likes ___ new job.", options:["his","her","their"], correct:[0]},
+{q:"39. ___ parents' house is big.", options:["My","Me","Mine"], correct:[0]},
+{q:"40. She ___ have any brothers.", options:["doesn't","don't","isn't"], correct:[0]},
+{q:"41. We ___ from Spain.", options:["is","are","am"], correct:[1]},
+{q:"42. She ___ to the park after work.", options:["go","goes","going"], correct:[1]},
+{q:"43. This is ___ pen. (Mark)", options:["Marks","Mark's","Marks'"], correct:[1]},
+{q:"44. I ___ three sisters.", options:["have","has","having"], correct:[0]},
+{q:"45. They ___ like watching TV.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"46. He ___ very friendly.", options:["are","is","am"], correct:[1]},
+{q:"47. We ___ in a big house.", options:["live","lives","living"], correct:[0]},
+{q:"48. ___ name is Alex. (the boy)", options:["the boy's","the boys'","the boys"], correct:[0]},
+{q:"49. She ___ breakfast at 8:00.", options:["have","has","having"], correct:[1]},
+{q:"50. I ___ like fast food.", options:["doesn't","don't","not"], correct:[1]},
+{q:"51. I ___ very happy today.", options:["is","am","are"], correct:[1]},
+{q:"52. He ___ to work by car.", options:["go","goes","going"], correct:[1]},
+{q:"53. This is ___ pen. (my friend)", options:["my friend","my friend's","my friends'"], correct:[1]},
+{q:"54. We ___ in a flat near the city.", options:["lives","live","living"], correct:[1]},
+{q:"55. They ___ coffee in the morning.", options:["don't drink","doesn't drink","not drink"], correct:[0]},
+{q:"56. She ___ my sister.", options:["is","are","am"], correct:[0]},
+{q:"57. I ___ two brothers.", options:["have","has","having"], correct:[0]},
+{q:"58. ___ house is big. (the man)", options:["the man's","the mans","the mans'"], correct:[0]},
+{q:"59. They ___ pizza.", options:["likes","like","liking"], correct:[1]},
+{q:"60. ___ you from Germany?", options:["Do","Is","Are"], correct:[2]},
+{q:"61. We ___ in Spain.", options:["are","am","is"], correct:[0]},
+{q:"62. She ___ TV every evening.", options:["watch","watches","watching"], correct:[1]},
+{q:"63. I like ___ dog.", options:["my","mine","me"], correct:[0]},
+{q:"64. This is ___ book. (teacher)", options:["teachers'","teacher's","teachers"], correct:[1]},
+{q:"65. He ___ go to school on Sunday.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"66. They ___ my parents.", options:["are","is","am"], correct:[0]},
+{q:"67. I ___ lunch at 12:30.", options:["has","have","having"], correct:[1]},
+{q:"68. She likes ___ new phone.", options:["her","his","hers"], correct:[0]},
+{q:"69. ___ name is Ben. (the boy)", options:["the boys","the boy's","the boys'"], correct:[1]},
+{q:"70. We ___ like cold weather.", options:["doesn't","don't","not"], correct:[1]},
+{q:"71. He ___ from Brazil.", options:["are","is","am"], correct:[1]},
+{q:"72. They ___ football on Saturdays.", options:["play","plays","playing"], correct:[0]},
+{q:"73. This is ___ bag. (Anna)", options:["Annas","Anna's","Annas'"], correct:[1]},
+{q:"74. I ___ in a big city.", options:["live","lives","living"], correct:[0]},
+{q:"75. She ___ a car.", options:["has","have","having"], correct:[0]},
+{q:"76. We ___ not hungry.", options:["are","is","am"], correct:[0]},
+{q:"77. He ___ to the gym every morning.", options:["goes","go","going"], correct:[0]},
+{q:"78. She likes ___ job.", options:["her","his","hers"], correct:[0]},
+{q:"79. ___ friends' house is near here.", options:["My","Me","Mine"], correct:[0]},
+{q:"80. I ___ breakfast at 7 o'clock.", options:["has","have","having"], correct:[1]},
+{q:"81. I ___ a student.", options:["are","am","is"], correct:[1]},
+{q:"82. They ___ like chocolate.", options:["doesn't","don't","not"], correct:[1]},
+{q:"83. This is ___ brother. (Mary)", options:["Marys","Mary's","Marys'"], correct:[1]},
+{q:"84. We ___ two dogs.", options:["has","have","having"], correct:[1]},
+{q:"85. He ___ to school every day.", options:["go","goes","going"], correct:[1]},
+{q:"86. She ___ very friendly.", options:["am","is","are"], correct:[1]},
+{q:"87. I ___ like spicy food.", options:["don't","doesn't","not"], correct:[0]},
+{q:"88. We like ___ new house.", options:["ours","our","us"], correct:[1]},
+{q:"89. ___ car is red. (Tom)", options:["Tom's","Toms","Toms'"], correct:[0]},
+{q:"90. They ___ three children.", options:["has","have","having"], correct:[1]},
+{q:"91. You ___ my best friend.", options:["am","are","is"], correct:[1]},
+{q:"92. He ___ football after work.", options:["plays","play","playing"], correct:[0]},
+{q:"93. This is ___ phone. (my mother)", options:["my mother","my mother's","my mothers'"], correct:[1]},
+{q:"94. We ___ from Italy.", options:["is","are","am"], correct:[1]},
+{q:"95. I ___ to bed late.", options:["goes","go","going"], correct:[1]},
+{q:"96. It ___ cold today.", options:["is","am","are"], correct:[0]},
+{q:"97. I ___ breakfast at home.", options:["have","has","having"], correct:[0]},
+{q:"98. They like ___ garden.", options:["their","theirs","them"], correct:[0]},
+{q:"99. ___ dog is cute. (the children)", options:["the children's","the childrens","the childrens'"], correct:[0]},
+{q:"100. She ___ to work on foot.", options:["goes","go","going"], correct:[0]},
+{q:"111. ___ a book on the table.", options:["There is","There are","Is there"], correct:[0]},
+{q:"112. ___ three apples in the basket.", options:["There is","There are","Are there"], correct:[1]},
+{q:"113. ___ a cat under the chair?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"114. ___ any milk in the fridge?", options:["Is there","Are there","There is"], correct:[0]},
+{q:"115. ___ two chairs in the kitchen.", options:["There is","There are","Is there"], correct:[1]},
+{q:"116. ___ a supermarket near your house?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"117. ___ some students in the classroom.", options:["There is","There are","Is there"], correct:[1]},
+{q:"118. ___ a car outside.", options:["There is","There are","Is there"], correct:[0]},
+{q:"119. ___ many books on the shelf.", options:["There is","There are","Is there"], correct:[1]},
+{q:"120. ___ any water in the bottle?", options:["Is there","Are there","There are"], correct:[0]},
+{q:"121. ___ a pen on the desk.", options:["There is","There are","Is there"], correct:[0]},
+{q:"122. ___ two dogs in the garden.", options:["There is","There are","Are there"], correct:[1]},
+{q:"123. ___ a computer in the room?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"124. ___ any bananas on the table?", options:["Is there","Are there","There are"], correct:[1]},
+{q:"125. ___ a picture on the wall.", options:["There is","There are","Is there"], correct:[0]},
+{q:"126. ___ three windows in the classroom.", options:["There is","There are","Are there"], correct:[1]},
+{q:"127. ___ a man in the car.", options:["There is","There are","Is there"], correct:[0]},
+{q:"128. ___ five people in the shop.", options:["There is","There are","Are there"], correct:[1]},
+{q:"129. ___ a bird in the tree?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"130. ___ any chairs in the living room?", options:["Is there","Are there","There are"], correct:[1]},
+{q:"131. ___ a telephone in the office.", options:["There is","There are","Is there"], correct:[0]},
+{q:"132. ___ a lot of cars in the street.", options:["There is","There are","Are there"], correct:[1]},
+{q:"133. ___ a hotel near here?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"134. ___ some flowers in the garden.", options:["There is","There are","Is there"], correct:[1]},
+{q:"135. ___ a restaurant next to the bank.", options:["There is","There are","Is there"], correct:[0]},
+{q:"136. A cat is on the sofa.", options:["There is","There are","Is there"], correct:[0]},
+{q:"137. Two apples are in the basket.", options:["There is","There are","Are there"], correct:[1]},
+{q:"138. ___ a car in the garage?", options:["There is","Is there","Are there"], correct:[1]},
+{q:"139. ___ any milk in the fridge?", options:["Is there","Are there","There are"], correct:[0]},
+{q:"140. A picture is on the wall.", options:["There is","There are","Is there"], correct:[0]},
+{q:"141. ___ is my bag.", options:["This","These","Those"], correct:[0]},
+{q:"142. ___ are my friends.", options:["This","These","That"], correct:[1]},
+{q:"143. ___ is your car over there.", options:["This","That","These"], correct:[1]},
+{q:"144. ___ shoes are very nice.", options:["This","That","Those"], correct:[2]},
+{q:"145. ___ is my mother.", options:["This","These","Those"], correct:[0]},
+{q:"146. ___ are my books on the table.", options:["This","These","That"], correct:[1]},
+{q:"147. ___ is not my pen; it's yours.", options:["This","These","Those"], correct:[0]},
+{q:"148. ___ are my brothers in the garden.", options:["This","That","Those"], correct:[2]},
+{q:"149. ___ is a good idea!", options:["This","That","These"], correct:[1]},
+{q:"150. ___ are very old photos.", options:["This","These","That"], correct:[1]},
+{q:"151. ___ is my teacher.", options:["This","These","Those"], correct:[0]},
+{q:"152. ___ are my pencils.", options:["This","These","That"], correct:[1]},
+{q:"153. ___ is my house over there.", options:["This","That","These"], correct:[1]},
+{q:"154. ___ cats are very cute.", options:["This","That","Those"], correct:[2]},
+{q:"155. ___ is my best friend.", options:["This","These","Those"], correct:[0]},
+{q:"156. ___ are my shoes near the door.", options:["This","These","That"], correct:[1]},
+{q:"157. ___ is my chair, not yours.", options:["This","These","Those"], correct:[0]},
+{q:"158. ___ apples are red and sweet.", options:["This","That","Those"], correct:[2]},
+{q:"159. ___ is my brother's car.", options:["This","These","Those"], correct:[0]},
+{q:"160. ___ are my parents in the photo.", options:["This","These","That"], correct:[1]},
+{q:"161. ___ dress looks beautiful on you.", options:["This","That","These"], correct:[1]},
+{q:"162. ___ are my new socks.", options:["This","These","That"], correct:[1]},
+{q:"163. ___ is my favorite cup.", options:["This","These","Those"], correct:[0]},
+{q:"164. ___ buildings over there are very tall.", options:["This","That","Those"], correct:[2]},
+{q:"165. ___ is a big problem.", options:["This","That","These"], correct:[1]},
+{q:"166. She ___ to school every day.", options:["go","goes","going"], correct:[1]},
+{q:"167. I ___ coffee in the morning.", options:["drink","drinks","drinking"], correct:[0]},
+{q:"168. They ___ in a big house.", options:["live","lives","living"], correct:[0]},
+{q:"169. He ___ TV in the evening.", options:["watch","watches","watching"], correct:[1]},
+{q:"170. We ___ English at school.", options:["study","studies","studying"], correct:[0]},
+{q:"171. My father ___ a car.", options:["have","has","having"], correct:[1]},
+{q:"172. The baby ___ every night.", options:["sleep","sleeps","sleeping"], correct:[1]},
+{q:"173. I ___ like pizza.", options:["don't","doesn't","not"], correct:[0]},
+{q:"174. ___ you play football on Sundays?", options:["Do","Does","Are"], correct:[0]},
+{q:"175. She ___ not work on Saturdays.", options:["do","does","is"], correct:[1]},
+{q:"176. He ___ to music every day.", options:["listen","listens","listening"], correct:[1]},
+{q:"177. They ___ in London.", options:["live","lives","living"], correct:[0]},
+{q:"178. My brother ___ his homework in the evening.", options:["do","does","doing"], correct:[1]},
+{q:"179. ___ she speak English?", options:["Do","Does","Is"], correct:[1]},
+{q:"180. We ___ to the park on weekends.", options:["go","goes","going"], correct:[0]},
+{q:"181. I ___ like cold weather.", options:["don't","doesn't","not"], correct:[0]},
+{q:"182. She ___ play tennis on Mondays.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"183. ___ you go to work by bus?", options:["Do","Does","Are"], correct:[0]},
+{q:"184. ___ he speak French?", options:["Do","Does","Is"], correct:[1]},
+{q:"185. They ___ eat meat.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"186. My brother ___ watch TV in the morning.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"187. ___ your parents live in Paris?", options:["Do","Does","Are"], correct:[0]},
+{q:"188. ___ your sister like coffee?", options:["Do","Does","Is"], correct:[1]},
+{q:"189. We ___ study on Sunday.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"190. He ___ work at night.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"191. ___ you play the guitar?", options:["Do","Does","Are"], correct:[0]},
+{q:"192. She ___ go to the gym after work.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"193. ___ they have a car?", options:["Do","Does","Are"], correct:[0]},
+{q:"194. I ___ understand this question.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"195. ___ your teacher give you homework every day?", options:["Do","Does","Is"], correct:[1]},
+{q:"196. She ___ to the gym every morning.", options:["go","goes","going"], correct:[1]},
+{q:"197. I ___ breakfast at 7 o'clock.", options:["have","has","having"], correct:[0]},
+{q:"198. They ___ football on Sundays.", options:["play","plays","playing"], correct:[0]},
+{q:"199. He ___ TV after school.", options:["watch","watches","watching"], correct:[1]},
+{q:"200. We ___ English every day.", options:["study","studies","studying"], correct:[0]},
+{q:"201. My father ___ a big car.", options:["have","has","having"], correct:[1]},
+{q:"202. The dog ___ in the garden.", options:["sleep","sleeps","sleeping"], correct:[1]},
+{q:"203. I ___ like spicy food.", options:["don't","doesn't","isn't"], correct:[0]},
+{q:"204. ___ you speak English?", options:["Do","Does","Are"], correct:[0]},
+{q:"205. She ___ go to school on Saturdays.", options:["don't","doesn't","isn't"], correct:[1]},
+{q:"206. He ___ to music in the evening.", options:["listen","listens","listening"], correct:[1]},
+{q:"207. They ___ in a small town.", options:["live","lives","living"], correct:[0]},
+{q:"208. My sister ___ her homework at night.", options:["do","does","doing"], correct:[1]},
+{q:"209. ___ he read books every day?", options:["Do","Does","Is"], correct:[1]},
+{q:"210. We ___ to the market on Fridays.", options:["go","goes","going"], correct:[0]},
+{q:"211. A ___ stores and manages data online.", options:["cloud server","desktop","keyboard"], correct:[0]},
+{q:"212. A ___ converts code into executable programs.", options:["compiler","browser","printer"], correct:[0]},
+{q:"213. ___ is the process of finding and fixing errors in code.", options:["debugging","typing","copying"], correct:[0]},
+{q:"214. ___ refers to the rules of a programming language.", options:["syntax","battery","screen"], correct:[0]},
+{q:"215. An ___ identifies a device on a network.", options:["IP address","domain name","router"], correct:[0]},
+{q:"216. ___ is the process of encoding data for security.", options:["encryption","malware","shortcut"], correct:[0]},
+{q:"217. A ___ updates software automatically to fix security vulnerabilities.", options:["automatic update","router","keyboard"], correct:[0]},
+{q:"218. A ___ is the smallest unit of digital data.", options:["bit","byte","pixel"], correct:[0]},
+{q:"219. An ___ is a step-by-step procedure for solving a problem.", options:["algorithm","virus","printer"], correct:[0]},
+{q:"220. A ___ stores items in a last-in, first-out order.", options:["stack","queue","loop"], correct:[0]},
+{q:"221. A ___ stores items in a first-in, first-out order.", options:["queue","stack","loop"], correct:[0]},
+{q:"222. A ___ repeats instructions multiple times.", options:["loop","stack","queue"], correct:[0]},
+{q:"223. ___ is the amount of data that can be transmitted in a network.", options:["bandwidth","storage","keyboard"], correct:[0]},
+{q:"224. A ___ acts as an intermediary between a client and server.", options:["proxy server","firewall","monitor"], correct:[0]},
+{q:"225. A ___ allows users to interact with software using graphics.", options:["GUI","CLI","API"], correct:[0]},
+{q:"226. A ___ allows users to interact with software via text commands.", options:["CLI","GUI","API"], correct:[0]},
+{q:"227. An ___ allows two software applications to communicate.", options:["API","GUI","CLI"], correct:[0]},
+{q:"228. A ___ simulates a computer system on another machine.", options:["virtual machine","router","scanner"], correct:[0]},
+{q:"229. A ___ stores small amounts of website data on a user’s device.", options:["cookie","cache","file"], correct:[0]},
+{q:"230. A ___ temporarily stores data to speed up loading.", options:["cache","cookie","file"], correct:[0]},
+{q:"231. A ___ blocks unauthorized access to a network.", options:["firewall","virus","router"], correct:[0]},
+{q:"232. A ___ directs data packets between networks.", options:["router","firewall","switch"], correct:[0]},
+{q:"233. A ___ connects multiple devices within the same network.", options:["switch","router","modem"], correct:[0]},
+{q:"234. A ___ converts digital signals to analog for transmission.", options:["modem","router","switch"], correct:[0]},
+{q:"235. ___ authentication uses fingerprints or facial recognition.", options:["biometric","password","PIN"], correct:[0]},
+{q:"236. ___ adds an extra security step beyond a password.", options:["two-factor authentication","password","PIN"], correct:[0]},
+{q:"237. ___ allows storing files online accessible from anywhere.", options:["cloud storage","USB drive","hard drive"], correct:[0]},
+{q:"238. An ___ is faster than a traditional hard drive.", options:["SSD","HDD","RAM"], correct:[0]},
+{q:"239. ___ is temporary memory used while the computer runs.", options:["RAM","ROM","GPU"], correct:[0]},
+{q:"240. ___ is permanent memory storing system firmware.", options:["ROM","RAM","CPU"], correct:[0]},
+{q:"241. A ___ processes graphics for display.", options:["GPU","CPU","RAM"], correct:[0]},
+{q:"242. The ___ connects all hardware components.", options:["motherboard","CPU","GPU"], correct:[0]},
+{q:"243. ___ is firmware that initializes hardware on startup.", options:["BIOS","OS","RAM"], correct:[0]},
+{q:"244. The ___ manages computer resources and software.", options:["OS","BIOS","CPU"], correct:[0]},
+{q:"245. The ___ is the core part of an operating system.", options:["kernel","shell","GUI"], correct:[0]},
+{q:"246. A ___ provides a command-line interface to the OS.", options:["shell","kernel","GUI"], correct:[0]},
+{q:"247. ___ is a scam to trick users into giving sensitive info.", options:["phishing","malware","spam"], correct:[0]},
+{q:"248. ___ is malicious software intended to harm a device.", options:["malware","phishing","adware"], correct:[0]},
+{q:"249. ___ displays unwanted advertisements on a device.", options:["adware","malware","spyware"], correct:[0]},
+{q:"250. ___ secretly collects user information.", options:["spyware","adware","malware"], correct:[0]},
+{q:"251. ___ immerses a user completely in a digital environment.", options:["virtual reality","augmented reality","mixed reality"], correct:[0]},
+{q:"252. ___ overlays digital info on the real world.", options:["augmented reality","virtual reality","mixed reality"], correct:[0]},
+{q:"253. ___ combines real and virtual objects interactively.", options:["mixed reality","virtual reality","augmented reality"], correct:[0]},
+{q:"254. ___ translates domain names into IP addresses.", options:["DNS","IP","MAC"], correct:[0]},
+{q:"255. A ___ address uniquely identifies a network interface.", options:["MAC","DNS","IP"], correct:[0]},
+{q:"256. ___ is wired networking technology.", options:["Ethernet","Wi-Fi","Bluetooth"], correct:[0]},
+{q:"257. ___ is wireless networking using radio waves.", options:["Wi-Fi","Ethernet","Bluetooth"], correct:[0]},
+{q:"258. ___ is for short-range device-to-device communication.", options:["Bluetooth","Wi-Fi","Ethernet"], correct:[0]},
+{q:"259. A ___ copies all files every time.", options:["full backup","incremental backup","differential backup"], correct:[0]},
+{q:"260. An ___ only copies files changed since the last backup.", options:["incremental backup","full backup","differential backup"], correct:[0]},
+{q:"261. A ___ lets you perform a function quickly using keys.", options:["keyboard shortcut","toolbar","menu"], correct:[0]},
+{q:"262. ___ breaks code into separate reusable units.", options:["modular programming","object-oriented","procedural"], correct:[0]},
+{q:"263. ___ uses objects and classes to organize code.", options:["object-oriented programming","procedural","modular"], correct:[0]},
+{q:"264. ___ organizes code as a sequence of procedures or functions.", options:["procedural programming","object-oriented","modular"], correct:[0]},
+{q:"265. ___ protects information by making it unreadable to unauthorized users.", options:["data encryption","data compression","data deletion"], correct:[0]},
+{q:"266. ___ reduces the size of files for storage or transfer.", options:["data compression","data encryption","data deletion"], correct:[0]},
+{q:"267. ___ permanently removes files from storage.", options:["data deletion","data compression","data encryption"], correct:[0]},
+{q:"268. ___ is the arrangement of devices in a network.", options:["network topology","IP addressing","protocol"], correct:[0]},
+{q:"269. ___ assigns unique addresses to devices on a network.", options:["IP addressing","network topology","protocol"], correct:[0]},
+{q:"270. A ___ defines rules for communication between devices.", options:["protocol","network topology","IP addressing"], correct:[0]},
+{q:"271. ___ tests the reachability of a device on a network.", options:["ping","traceroute","netstat"], correct:[0]},
+{q:"272. ___ shows the path packets take to reach a destination.", options:["traceroute","ping","netstat"], correct:[0]},
+{q:"273. ___ displays active network connections on a computer.", options:["netstat","ping","traceroute"], correct:[0]},
+{q:"274. A ___ device can be connected or removed without shutting down the system.", options:["hot swappable","cold swappable","manual"], correct:[0]},
+{q:"275. A ___ device requires the system to be turned off before removal.", options:["cold swappable","hot swappable","manual"], correct:[0]},
+{q:"276. ___ is done by manually setting up software or hardware.", options:["manual installation","hot swappable","cold swappable"], correct:[0]},
+{q:"277. ___ allows users to log in once to access multiple systems.", options:["single sign-on (SSO)","multi-factor authentication","password"], correct:[0]},
+{q:"278. ___ requires two or more verification steps for login.", options:["multi-factor authentication","single sign-on","password"], correct:[0]},
+{q:"279. A ___ is a secret word or phrase used for authentication.", options:["password","multi-factor authentication","single sign-on"], correct:[0]},
+{q:"280. A ___ quickly fixes a specific software issue.", options:["hotfix","service pack","patch"], correct:[0]},
+{q:"281. A ___ is a minor software release that adds new features without major changes.", options:["software update","hotfix","patch"], correct:[0]},
+{q:"282. A ___ improves software functionality or fixes bugs.", options:["patch","hotfix","service pack"], correct:[0]},
+{q:"283. A ___ is a virtualized server rented by a user.", options:["virtual private server (VPS)","dedicated server","shared server"], correct:[0]},
+{q:"284. A ___ is a physical server used exclusively by one client.", options:["dedicated server","VPS","shared server"], correct:[0]},
+{q:"285. A ___ hosts multiple clients on the same physical machine.", options:["shared server","VPS","dedicated server"], correct:[0]},
+{q:"286. ___ is the amount of data transmitted per second in audio or video.", options:["bitrate","resolution","frame rate"], correct:[0]},
+{q:"287. ___ is the number of pixels in a display.", options:["resolution","bitrate","frame rate"], correct:[0]},
+{q:"288. ___ is the number of images displayed per second in video.", options:["frame rate","bitrate","resolution"], correct:[0]},
+{q:"289. ___ isolates applications to prevent them from harming the system.", options:["sandboxing","firewall","antivirus"], correct:[0]},
+{q:"290. A ___ monitors incoming and outgoing network traffic to detect suspicious activity.", options:["intrusion detection system (IDS)","sandboxing","antivirus"], correct:[0]},
+{q:"291. ___ detects and removes malicious software.", options:["antivirus","sandboxing","firewall"], correct:[0]},
+{q:"292. ___ processes data near the source rather than in a central cloud.", options:["edge computing","cloud computing","grid computing"], correct:[0]},
+{q:"293. ___ provides computing resources over the internet.", options:["cloud computing","edge computing","grid computing"], correct:[0]},
+{q:"294. ___ connects multiple computers to work on a task together.", options:["grid computing","edge computing","cloud computing"], correct:[0]},
+{q:"295. ___ checks the interface of a software application.", options:["GUI testing","unit testing","integration testing"], correct:[0]},
+{q:"296. ___ tests individual components of code.", options:["unit testing","GUI testing","integration testing"], correct:[0]},
+{q:"297. ___ tests how different modules work together.", options:["integration testing","GUI testing","unit testing"], correct:[0]},
+{q:"298. A ___ allows wireless devices to connect to a network via a single device.", options:["hotspot","access point","repeater"], correct:[0]},
+{q:"299. An ___ extends a network using existing wired connections.", options:["access point","hotspot","repeater"], correct:[0]},
+{q:"300. A ___ amplifies wireless signals to extend coverage.", options:["repeater","hotspot","access point"], correct:[0]},
+{q:"301. ___ allows data to flow in both directions simultaneously.", options:["full-duplex","half-duplex","simplex"], correct:[0]},
+{q:"302. ___ allows data to flow in one direction at a time.", options:["half-duplex","full-duplex","simplex"], correct:[0]},
+{q:"303. A ___ helps detect and remove malicious software from a computer.", options:["antivirus","malware removal tool","firewall"], correct:[0]},
+{q:"304. A ___ stores a copy of files online for recovery in case of data loss.", options:["cloud backup","local backup","external hard drive"], correct:[0]},
+{q:"305. ___ is a type of attack that locks or encrypts files and demands payment.", options:["ransomware","spyware","phishing"], correct:[0]},
+{q:"306. A ___ encrypts internet traffic to provide privacy and security online.", options:["virtual private network (VPN)","proxy","firewall"], correct:[0]},
+{q:"97. A ___ distributes network traffic evenly across multiple servers.", options:["load balancer","router","switch"], correct:[0]},
+{q:"98. ___ is a high-speed wired connection used for networking.", options:["Ethernet cable","fiber optic","Wi-Fi"], correct:[0]},
+{q:"99. ___ software allows anyone to view and modify its source code freely.", options:["open source","proprietary","freeware"], correct:[0]},
+{q:"100. ___ requires the user to verify identity using two different methods.", options:["two-factor authentication","CAPTCHA","password"], correct:[0]},
+{q:"101. A ___ is a powerful computer that provides resources and services to other computers on a network.", options:["server","keyboard","browser"], correct:[0]},
+{q:"102. ___ is the practice of protecting systems and data from digital attacks.", options:["cybersecurity","animation","translation"], correct:[0]},
+{q:"103. ___ is the short-term memory of a computer where active programs are stored.", options:["RAM","monitor","microphone"], correct:[0]},
+{q:"104. A ___ is a type of scannable code used for quick digital access to information.", options:["QR code","barcode","screenshot"], correct:[0]},
+{q:"105. An ___ is a set of rules used to solve a problem step by step.", options:["algorithm","painting","shortcut"], correct:[0]},
+{q:"106. A ___ stores and manages large amounts of structured data for applications.", options:["database server","smartphone","joystick"], correct:[0]},
+{q:"107. A ___ improves performance and fixes security issues on a device.", options:["software update","wallpaper","recycle bin"], correct:[0]},
+{q:"108. A ___ is a local network connecting computers within a small area.", options:["LAN","USB","speaker"], correct:[0]},
+{q:"109. Excel is an example of a ___.", options:["spreadsheet","slideshow","antivirus"], correct:[0]}
+];
+
+/* ================= VARS ================= */
+let selected=[];
+let answers=[];
+let current=0;
+
+/* ================= START ================= */
+function start(id){
+
+    document.getElementById("menu").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    answers=[];
+    current=0;
+
+    if(id<8){
+        let start=(id-1)*50;
+        selected=questions.slice(start,start+50);
+    }else{
+        selected=questions.sort(()=>Math.random()-0.5).slice(0,50);
+    }
+
+    renderGrid();
+}
+
+/* ================= GRID ================= */
+function renderGrid(){
+
+    let g=document.getElementById("grid");
+    g.innerHTML="";
+
+    for(let i=0;i<50;i++){
+
+        let b=document.createElement("div");
+        b.className="box";
+
+        if(i===current) b.classList.add("active");
+        if(answers[i]!=null) b.classList.add("answered");
+
+        b.innerText=i+1;
+        b.onclick=()=>openQ(i);
+
+        g.appendChild(b);
+    }
+}
+
+/* ================= QUESTION ================= */
+function openQ(i){
+
+    current=i;
+    let q=selected[i];
+
+    document.getElementById("qbox").innerHTML=`
+        <h3>${q.q}</h3>
+        ${q.options.map((o,j)=>`
+            <div class="option ${answers[i]===j?'selected':''}"
+            onclick="select(${i},${j})">${o}</div>
+        `).join("")}
+    `;
+
+    renderGrid();
+}
+
+/* ================= SELECT ================= */
+function select(i,j){
+    answers[i]=j;
+    openQ(i);
+}
+
+/* ================= HOME ================= */
+function home(){
+    location.reload();
+}
+
+/* ================= RESULT ================= */
+function showResult(){
+
+    let score=0;
+    let html="";
+
+    selected.forEach((q,i)=>{
+
+        let ok = answers[i]===q.correct[0];
+
+        if(ok) score++;
+
+        html+=`
+        <div class="resultBox">
+            <h4>${i+1}. ${q.q}</h4>
+            <p class="${ok?'correct':'wrong'}">
+                Sen: ${q.options[answers[i]] || "—"} <br>
+                To‘g‘ri: ${q.options[q.correct[0]]}
+            </p>
+        </div>`;
+    });
+
+    document.getElementById("app").style.display="none";
+    document.getElementById("resultPage").style.display="block";
+
+    document.getElementById("resultPage").innerHTML=`
+        <h2>🏆 NATIJA</h2>
+        <h1>${score}/50</h1>
+        <h3>${Math.round(score*100/50)}%</h3>
+        <button class="btn home" onclick="home()">🏠 Orqaga</button>
+        ${html}
+    `;
+}
+
+</script>
+
+</body>
+</html>
